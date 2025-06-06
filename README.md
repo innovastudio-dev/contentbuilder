@@ -4,7 +4,9 @@
 
 Website: [https://innovastudio.com/contentbuilder](https://innovastudio.com/contentbuilder)
 
-Examples:
+Demo: [https://demo.innovastudio.com/contentbuilder/](https://demo.innovastudio.com/contentbuilder/)
+
+Other Resources:
 
 [Using ContentBuilder.js in a React Project](https://innovastudio.com/using-contentbuilder-in-a-react-project)
 
