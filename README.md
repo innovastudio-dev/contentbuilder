@@ -314,7 +314,7 @@ This folder contains:
 - **`content.css`** – Styles used by the snippets
 - **`images/`** – Image assets used in the snippets
 
-**Configuring Snippet Paths**
+### **Configuring Snippet Paths**
 
 If you host your assets remotely (e.g., on a CDN), you can configure the paths during initialization:
 
@@ -333,7 +333,7 @@ const builder = new ContentBuilder({
 
 These options ensure that all relative paths inside the snippets (especially image URLs) resolve correctly when hosted externally.
 
-**Loading Snippets**
+### **Loading Snippets**
 
 To load the snippets panel dynamically, use the **`loadSnippets()`** method:
 
@@ -343,7 +343,7 @@ builder.loadSnippets('https://path.to/assets/minimalist-blocks/content.js', true
 
 The first argument is the URL to the **`content.js`** file. You can optionally set the second parameter to **`true`** to auto-open the snippets panel after loading.
 
-**Customizing Snippets**
+### **Customizing Snippets**
 
 You can add or edit snippets by modifying the **`content.js`** file. It contains the list of available snippets in JSON format.
 
@@ -366,7 +366,41 @@ Each snippet includes:
 - **`category`** – The category ID this snippet belongs to.
 - **`html`** – The HTML markup for the block.
 
-**Snippet Categories**
+### **Control Editable Behavior in Snippets**
+
+You can add **special behaviors** to elements inside your snippets using data attributes.
+
+**1. Prevent Image Replacement (`data-fixed`)**
+
+To make an image **not replaceable** , add the **`data-fixed`** attribute to the **`<img>`** tag:
+
+```jsx
+<img src="image.png" data-fixed />
+```
+
+**2. Make a Column Non-editable (`data-noedit`)**
+
+To prevent content editing inside a column, use the **`data-noedit`** attribute:
+
+```jsx
+<div class="row">
+    <div class="column" data-noedit>
+        This content cannot be edited.
+    </div>
+</div>
+```
+
+**3. Protect a Column Fully (`data-protected`)**
+
+```jsx
+<div class="row">
+    <div class="column" data-protected>
+        This column is fully protected.
+    </div>
+</div>
+```
+
+### **Snippet Categories**
 
 Snippets are organized into categories. You can define custom categories or use the built-in ones using the **`snippetCategories`** option:
 
@@ -1207,6 +1241,26 @@ const builder = new ContentBuilder({
 
 This ensures the editor starts fresh each time, ignoring any stored settings.
 
+### **⚙️ Set Custom Headers for Server Requests**
+
+When ContentBuilder.js interacts with a server — such as when using AI features via the **`sendCommandUrl`** or other backend integrations — it uses the **`fetch()`** API to send requests.
+
+You can customize the HTTP headers sent with these requests using the **`headers`** option:
+
+```jsx
+const builder = new ContentBuilder({
+    container: '.container',
+    headers: {
+        'Authorization': 'Bearer YOUR_TOKEN_HERE',
+        'X-Custom-Header': 'CustomValue'
+    }
+});
+```
+
+🔒 **Note:** The **`'Content-Type': 'application/json'`** header is automatically added by default. You do not need to include it.
+
+These custom headers will be included in all internal **`fetch()`** requests made by the editor.
+
 ## **⚙️ Methods**
 
 ### **📥 Load HTML Content Programmatically**
@@ -1273,6 +1327,76 @@ You can open the Preferences dialog from code using:
 builder.viewConfig();
 ```
 
+### **⚙️ Programmatically Open Snippets Dialog**
+
+You can open the Snippets dialog from code using:
+
+```jsx
+builder.viewSnippets();
+```
+
+### **⚙️ Programmatically Open HTML Code Editor**
+
+You can open the HTML code editor from code using:
+
+```jsx
+builder.viewHtml();
+```
+
+### **⚙️ Disable Column HTML Code Editor**
+
+By default, ContentBuilder.js shows an **HTML editor button** in the column tool popup. This allows users to view and edit the raw HTML of a column.
+
+If you want to **hide this button** , you can disable it using the **`columnHtmlEditor`** option:
+
+```jsx
+const builder = new ContentBuilder({
+    container: '.container',
+    columnHtmlEditor: false,
+});
+```
+
+### **⚙️ Disable Row HTML Code Editor**
+
+By default, ContentBuilder.js shows an **HTML editor button** in the row tool popup. This allows users to view and edit the raw HTML of a row.
+
+If you want to **hide this button** , you can disable it using the **`rowHtmlEditor`** option:
+
+```jsx
+const builder = new ContentBuilder({
+    container: '.container',
+    rowHtmlEditor: false,
+});
+```
+
+### **⚙️ Change Element Selection Behavior**
+
+By default, when a user presses **CMD+A (Mac)** or **CTRL+A (Windows)** inside an editable area, ContentBuilder selects only the current element (such as a paragraph or heading) — not the entire text in a column.
+
+You can control this behavior using the **`elementSelection`** option:
+
+```jsx
+const builder = new ContentBuilder({
+    container: '.container',
+    elementSelection: true // Default behavior
+});
+```
+
+- When **`elementSelection: true`** – Selects only the current element inside the column.
+- When **`elementSelection: false`** – Selects the entire column content.
+
+### **↩️ Programmatically Trigger Undo or Redo**
+
+You can also trigger undo or redo actions from your code using the following methods:
+
+```jsx
+builder.undo();  // Reverts the last action
+
+builder.redo();  // Re-applies the last undone action
+```
+
+These are useful when integrating with custom UI elements.
+
 ### **🛑 Destroying the Editor Instance**
 
 To completely remove a ContentBuilder instance, use:
@@ -1333,6 +1457,127 @@ const builder = new ContentBuilder({
     }
 });
 ```
+
+## **📁 Toolbar**
+
+ContentBuilder.js provides a flexible toolbar system with different toolbars for different editing contexts. You can customize which buttons appear in each toolbar to match your application’s needs.
+
+### **🔤 Main Toolbar**
+
+The **main toolbar** appears when a **text element** is selected.
+
+It supports two rows of buttons:
+
+- The first row is always visible.
+- The second row appears when the user clicks the **More (⋯)** button.
+
+**Configuration Options:**
+
+- **`buttons`** – First row of buttons
+- **`buttonsMore`** – Second row of buttons
+
+```jsx
+const builder = new ContentBuilder({
+    container: '.container',
+    buttons: ['bold', 'italic', 'underline', 'formatting', 'color', 'align', 'textsettings', 'createLink', 'tags', '|', 'undo', 'redo', 'zoom', 'livepreview', 'aiassistant', 'snippets', 'more'],  
+    buttonsMore: ['icon', 'svg', 'image', '|', 'list', 'font', 'formatPara', '|', 'html', 'preferences'], 
+});
+```
+
+Plugin buttons (like **`preview`**, **`wordcount`**, **`symbols`**) can be used here.
+
+### **🖼️ Element Toolbar**
+
+The **element toolbar** appears when a **non-text element** is selected — such as an image, video, or spacer.
+
+Like the main toolbar, it supports two rows.
+
+**Configuration Options:**
+
+- **`elementButtons`** – First row of buttons
+- **`elementButtonsMore`** – Second row of buttons
+
+```jsx
+const builder = new ContentBuilder({
+    container: '.container',
+    elementButtons: ['left', 'center', 'right', 'full' , 'undo', 'redo', 'zoom', 'livepreview', 'aiassistant', 'snippets', 'more'],  
+    elementButtonsMore: ['|', 'html', 'preferences'], 
+});
+```
+
+Plugin buttons are also supported here.
+
+### **🎨 Icon Toolbar**
+
+The **icon toolbar** appears when an **icon** element is selected.
+
+You can configure both rows like this:
+
+**Configuration Options:**
+
+- **`iconButtons`** – First row of buttons
+- **`iconButtonsMore`** – Second row of buttons
+
+```jsx
+const builder = new ContentBuilder({
+    container: '.container',
+    iconButtons: ['icon', 'color','textsettings', 'createLink','|', 'undo', 'redo', 'zoom', 'livepreview', 'aiassistant', 'snippets', 'more'],  
+    iconButtonsMore: ['html', 'preferences'], 
+});
+```
+
+## **🛠 Customize Editing Controls**
+
+ContentBuilder.js gives you full control over the editing interface. This is especially useful when building a focused content editor.
+
+Here’s an example that demonstrates how to tailor the editing experience:
+
+```jsx
+const builder = new ContentBuilder({
+    container: '.container',
+
+    columnTool: false, // Hide column tool
+    // Configure buttons in the column menu (when columnTool is true)
+    // columnMoreButtons: ['moveleft', 'moveright', 'moveup', 'movedown', 'increase', 'decrease', 'duplicate'],
+      
+    // Configure buttons in the element menu
+    elementMoreButtons: ['moveup', 'movedown', 'duplicate'],
+
+    // Configure buttons in the row menu
+    rowMoreButtons: ['moveup', 'movedown', 'duplicate'],
+
+    // Configure buttons in the "+" quick add popover
+    quickAddButtons: [
+        'paragraph', 'headline', 'image', 'list',
+        'heading1', 'heading2', 'heading3', 'heading4',
+        'quote', 'preformatted', 'map', 'youtube',
+        'video', 'audio', 'icon', 'svg', 'table',
+        'social', 'code', 'spacer', 'line'
+    ],
+
+    // Hide the Quick Add "More" button that opens the snippets dialog
+    noSnippets: true,
+    
+    // Optional: Customize main toolbar buttons
+    buttons: ['bold', 'italic', 'underline', 'formatting', 'color', 'align', 'textsettings', 'createLink', 'tags', '|', 'undo', 'redo', 'aiassistant', 'more'],
+    buttonsMore: ['icon', 'svg', 'image', '|', 'list', 'font', 'formatPara', '|', 'html'],
+    elementButtons: ['left', 'center', 'right', 'full', 'undo', 'redo', 'aiassistant', 'more'],
+    elementButtonsMore: ['|', 'html'],
+    iconButtons: ['icon', 'color','textsettings', 'createLink','|', 'undo', 'redo', 'aiassistant', 'more'],
+    iconButtonsMore: ['html']
+});
+```
+
+### **Key Parameters Explained**
+
+| **Parameter** | **Description** |
+| --- | --- |
+| **`columnTool`** | If**`false`**, hides the column tool. |
+| **`columnMoreButtons`** | Sets the buttons shown in the column menu (only if**`columnTool`**is enabled). |
+| **`elementMoreButtons`** | Sets the buttons shown in the element menu. |
+| **`rowMoreButtons`** | Sets the buttons shown in the row menu. |
+| **`quickAddButtons`** | Sets the buttons shown in the "+" quick add popover. |
+| **`noSnippets`** | If**`true`**, hides the Quick Add "More" button that opens the snippets dialog. |
 
 ## **📁 Path Configuration**
 
