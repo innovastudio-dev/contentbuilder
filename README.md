@@ -37,7 +37,7 @@ import '@innovastudio/contentbuilder/public/contentbuilder/contentbuilder.css';
 <!-- CSS -->
 <link rel="stylesheet" href="contentbuilder/contentbuilder.css" />
 <!-- JS -->
-<script src="contentbuilder/contentbuilder.min.js" type="text/javascript"></script>
+<script src="contentbuilder/contentbuilder.min.js"></script>
 ```
 
 ### **Step 2: Rendering Output**
