@@ -834,7 +834,7 @@ This example shows how to create a content block that loads data from an externa
 
 **1. Snippet Definition in `content.js`**
 
-```json
+```jsx
 {
 'thumbnail': 'preview/dynamic-content.png',
 'category': '120',
