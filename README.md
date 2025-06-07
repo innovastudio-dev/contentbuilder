@@ -85,7 +85,7 @@ const builder = new ContentBuilder({
 Retrieve the current HTML content built inside the editor:
 
 ```jsx
-let html = builder.html();
+const html = builder.html();
 ```
 
 You can then send this HTML to a server for saving.
@@ -190,7 +190,7 @@ The **`onImageUpload`** function receives a file input event. You can process th
 
 ### **Example Upload Helper Function**
 
-This helper reads the file and returns a base64-encoded data URL:
+This helper function uploads the selected file to the server and returns the JSON response:
 
 ```jsx
 async function uploadFile(e) {
