@@ -14,6 +14,31 @@ Other Resources:
 
 [Using ContentBuilder.js in a Laravel Project](https://innovastudio.com/using-contentbuilder-in-a-laravel-project)
 
+- [ContentBuilder.js Documentation](#contentbuilderjs-documentation)
+   * [**🚀 Getting Started**](#-getting-started)
+   * [**🛠 Usage**](#-usage)
+   * [**💡 API Methods**](#-api-methods)
+   * [**🧪 Example Page**](#-example-page)
+   * [**📷 Media Upload Handling**](#-media-upload-handling)
+   * [**📁 Integrating a Custom File/Asset Picker**](#-integrating-a-custom-fileasset-picker)
+   * [**🧩 Snippets Management**](#-snippets-management)
+   * [**🖼️ Lightbox, Form & Slider Blocks**](#-lightbox-form-slider-blocks)
+   * [**🤖 AI Assistant Integration**](#-ai-assistant-integration)
+   * [**🔤 Language File Support**](#-language-file-support)
+   * [**🔌 Plugins**](#-plugins)
+   * [**🧩 Modules**](#-modules)
+   * [**🎨 CSS Framework Support**](#-css-framework-support)
+   * [**🎨 Canvas Mode**](#-canvas-mode)
+   * [**🎨 Themes**](#-themes)
+   * [**📄 Multiple Editable Area Support**](#-multiple-editable-area-support)
+   * [**🔧 Programmatically Add Editable Area**](#-programmatically-add-editable-area)
+   * [**🎨 Other Configuration Options**](#-other-configuration-options)
+   * [**⚙️ Methods**](#-methods)
+   * [**⚡ Event Handling**](#-event-handling)
+   * [**📁 Toolbar**](#-toolbar)
+   * [**🛠 Customize Editing Controls**](#-customize-editing-controls)
+   * [**📁 Path Configuration**](#-path-configuration)
+
 ## **🚀 Getting Started**
 
 ### **Step 1: Installation**
