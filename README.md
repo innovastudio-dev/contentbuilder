@@ -250,14 +250,6 @@ const builder = new ContentBuilder({
 });
 ```
 
-You can customize each handler independently based on the media type and upload destination.
-
-### **💡 Tips for Production Use**
-
-- Always validate file types and sizes before uploading.
-- Use server-side upload handlers to securely store files and return public URLs.
-- Consider integrating with cloud storage services like AWS S3, Firebase, or Cloudinary for scalable media handling.
-
 With these upload handlers in place, ContentBuilder becomes a fully functional editorial tool that allows content creators to embed rich media directly into their layouts.
 
 ## **📁 Integrating a Custom File/Asset Picker**
@@ -294,7 +286,11 @@ parent.selectAsset(url);
 
 Where **`url`** is the path to the selected file (e.g., **`'uploads/image.png'`**).
 
-This minimal integration enables basic media insertion functionality out of the box. You can either extend this file picker or replace it with your own custom implementation — just make sure to call **`parent.selectAsset(url)`** with the correct file URL when a file is selected.
+This minimal integration enables basic media insertion functionality. You can extend this file picker or replace it with your own custom implementation — just make sure to call **`parent.selectAsset(url)`** with the correct file URL when a file is selected.
+
+### **Recommendation: Use Files.js Asset Manager**
+
+For a more powerful and ready-to-use solution, you can use [Files.js – Asset Manager](https://innovastudio.com/asset-manager) , which integrates seamlessly with ContentBuilder.js and replaces the simple **`assets.html`** file picker with a full-featured media browser.
 
 ## **🧩 Snippets Management**
 
@@ -332,6 +328,21 @@ const builder = new ContentBuilder({
 ```
 
 These options ensure that all relative paths inside the snippets (especially image URLs) resolve correctly when hosted externally.
+
+### **Positioning the Snippets Modal**
+
+You can control where the snippets panel appears using the **`snippetModalLeft`** option:
+
+```jsx
+const builder = new ContentBuilder({
+    container: '.container',
+    
+    snippetModalLeft: true // Position snippets modal on the left side
+});
+```
+
+- By default, if **not set** , the snippets modal appears on the **right** side of the workspace.
+- Set **`snippetModalLeft: true`** to display it on the **left** instead.
 
 ### **Loading Snippets**
 
@@ -1190,7 +1201,7 @@ This defines the color palette available in the editor’s color picker dropdown
 
 ### **🏷️ Custom Tags (for CMS Integration)**
 
-Custom tags allow you to insert dynamic placeholders into content that can be replaced at runtime — ideal for CMS integrations or templating systems.
+Custom tags allow you to insert dynamic placeholders into content, which can be replaced with custom values at runtime
 
 You can define custom tags like this:
 
