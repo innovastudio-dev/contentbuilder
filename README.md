@@ -134,10 +134,8 @@ builder.loadHtml(`
 Load predefined block snippets (e.g., from **`content.js`**):
 
 ```jsx
-builder.loadSnippets('assets/minimalist-blocks/content.js', true);
+builder.loadSnippets('assets/minimalist-blocks/content.js');
 ```
-
-The second parameter is required and controls whether the snippets panel should auto-open after loading: true means auto-open.
 
 ## **🧪 Example Page**
 
@@ -177,7 +175,7 @@ const builder = new ContentBuilder({
     container: '.container'
 });
     
-builder.loadSnippets('assets/minimalist-blocks/content.js', true);
+builder.loadSnippets('assets/minimalist-blocks/content.js');
 
 html = `
     <div class="row">
@@ -374,10 +372,10 @@ const builder = new ContentBuilder({
 To load the snippets panel dynamically, use the **`loadSnippets()`** method:
 
 ```jsx
-builder.loadSnippets('https://path.to/assets/minimalist-blocks/content.js', true);
+builder.loadSnippets('https://path.to/assets/minimalist-blocks/content.js');
 ```
 
-The first argument is the URL to the **`content.js`** file. You can optionally set the second parameter to **`true`** to auto-open the snippets panel after loading.
+The argument is the URL to the **`content.js`** file.
 
 ### **Customizing Snippets**
 
