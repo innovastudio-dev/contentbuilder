@@ -561,7 +561,9 @@ Server-side endpoint examples for handling image generation requests are provide
 
 **For existing users:** If you're currently using Getimg.ai for image generation (`textToImageUrl`, `upscaleImageUrl` parameters), your implementation will continue to work without any changes. The Fal.ai integration is the current recommended approach for accessing a wider range of AI models, but you can continue using your existing setup or upgrade at your own pace.
 
-## Additional Resources
+## Resources
 
+- **[Plugin Development Guide](plugin-development.md)** - Learn how to create custom plugins for ContentBuilder
+- **[Configuration Reference](reference.md)**
 - **Product Website** - https://innovastudio.com/contentbuilder
 - **GitHub Repository** - https://github.com/innovastudio-dev/contentbuilder
