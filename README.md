@@ -418,11 +418,11 @@ You can build your own file picker application. The only requirement is that it 
 
 **For existing users:** If you're currently using `imageSelect`, `videoSelect`, `audioSelect`, `fileSelect`, or `mediaSelect` parameters, they will continue to work without any changes. The new `filePicker` parameter is a simplified alternative that handles all media types with a single configuration. You can upgrade to the new approach at your own pace.
 
-## AI Assistant Integration
+## AI Assistant (Code Chat)
 
-ContentBuilder includes an **AI Assistant panel** that allows users to generate and edit content using AI. This feature requires a server-side endpoint to communicate with AI providers like OpenAI or OpenRouter.
+ContentBuilder includes a **Code Chat panel** that allows users to generate and edit content using AI. This feature requires a server-side endpoint to communicate with AI providers like OpenAI or OpenRouter.
 
-**Important:** ContentBuilder.js is a client-side library and works with any server platform. The AI Assistant feature simply requires you to create an API endpoint on your server. Examples are provided in **Node.js, Next.js, and PHP** to cover common scenarios, but you can implement the endpoint in any server-side language or framework.
+**Important:** ContentBuilder.js is a client-side library and works with any server platform. The Code Chat feature simply requires you to create an API endpoint on your server. Examples are provided in **Node.js, Next.js, and PHP** to cover common scenarios, but you can implement the endpoint in any server-side language or framework.
 
 ### Requirements
 
@@ -438,41 +438,111 @@ You'll need an API key from one of these services:
 **Node.js/Next.js** (`.env` file):
 
 ```
-OPENAI_API_KEY=your_openai_api_key
+OPENAI_API_KEY=YOUR_API_KEY
+OPENROUTER_API_KEY=YOUR_API_KEY
 ```
 
 **PHP** (`config.php` file):
 
 ```php
-$OPENAI_API_KEY = 'your_openai_api_key';
+$OPENAI_API_KEY = 'YOUR_API_KEY';
+$OPENROUTER_API_KEY = 'YOUR_API_KEY';
 ```
 
 **Configure ContentBuilder:**
 
-**Node.js:**
-
 ```javascript
 const builder = new ContentBuilder({
     container: '.container',
-    sendCommandUrl: '/sendcommand' // Your server endpoint for handling AI requests
-});
-```
 
-**Next.js:**
+    // Enable Code Chat (supports OpenAI or OpenRouter)
 
-```javascript
-const builder = new ContentBuilder({
-    container: '.container',
-    sendCommandUrl: '/api/sendcommand' // Next.js API route
-});
-```
+    // clearChatSettings: true, // clear chat settings on load
+    // startCodeChat: true, // automatically open Code Chat
 
-**PHP:**
+    // OpenRouter:
+    sendCommandUrl: '/openrouter', // Your server endpoint for handling AI requests
+    sendCommandStreamUrl: '/openrouter_stream', // Enable streaming feature (optional)
+    systemModel: 'openai/gpt-4o-mini', // Configure model for analyzing request
+    codeModels: [ // Configure available models for code generation
+        { id: 'anthropic/claude-opus-4.5', label: 'Claude Opus 4.5' },
+        { id: 'google/gemini-3-pro-preview', label: 'Google Gemini 3 Pro Preview' },
+        { id: 'google/gemini-2.5-flash', label: 'Google Gemini 2.5 Flash' },
+        { id: 'qwen/qwen3-coder', label: 'Qwen 3 Coder' },
+        { id: 'openai/gpt-5-mini', label: 'GPT-5 Mini' },
+        { id: 'openai/gpt-5.1-codex-mini', label: 'GPT-5.1-Codex-Mini' },
+        { id: 'openai/gpt-5.1-codex', label: 'GPT-5.1-Codex' },
+        { id: 'anthropic/claude-sonnet-4.5', label: 'Claude Sonnet 4.5' },
+        { id: 'x-ai/grok-code-fast-1', label: 'Grok Code Fast 1' },
+        { id: 'mistralai/codestral-2508', label: 'Mistral Codestral 2508' },
+        { id: 'mistralai/devstral-small', label: 'Mistral Devstral Small' },
+        { id: 'openai/gpt-oss-120b', label: 'GPT OSS 120B' },
+        { id: 'google/gemini-2.5-flash-lite', label: 'Gemini 2.5 Flash Lite' },
+        { id: 'google/gemini-2.5-pro', label: 'Gemini 2.5 Pro' },
+        { id: 'z-ai/glm-4.6', label: 'GLM 4.6' },
+        { id: 'x-ai/grok-4-fast', label: 'Grok 4 Fast' },
+        { id: 'mistralai/mistral-large-2407', label: 'Mistral Large 2407' },
+        { id: 'mistralai/mistral-nemo', label: 'Mistral Nemo' },
+        { id: 'moonshotai/kimi-k2-0905', label: 'Kimi K2' },
+        { id: 'qwen/qwen3-vl-235b-a22b-instruct', label: 'Qwen 3 VL 235B' },
+        { id: 'deepseek/deepseek-v3.1-terminus', label: 'DeepSeek V3.1 Terminus' },
+        { id: 'deepseek/deepseek-chat-v3-0324', label: 'DeepSeek Chat V3' },
+        { id: 'minimax/minimax-m2', label: 'MiniMax M2' },
+    ],
+    chatModels: [ // Configure available models for chat
+        { id: 'openai/gpt-4o-mini', label: 'GPT-4o Mini' },
+        { id: 'openai/gpt-4o', label: 'GPT-4o' },
+        { id: 'openai/gpt-5.1', label: 'GPT-5.1' },
+        { id: 'openai/gpt-5.1-chat', label: 'GPT-5.1 Chat' },
+        { id: 'openai/gpt-5-mini', label: 'GPT-5 Mini' },
+        { id: 'openai/gpt-5-nano', label: 'GPT-5 Nano' },
+        { id: 'anthropic/claude-sonnet-4.5', label: 'Claude Sonnet 4.5' },
+        { id: 'google/gemini-2.5-flash', label: 'Google Gemini 2.5 Flash' },
+        { id: 'google/gemini-2.5-flash-lite', label: 'Gemini 2.5 Flash Lite' },
+        { id: 'google/gemini-2.5-pro', label: 'Gemini 2.5 Pro' },
+        { id: 'z-ai/glm-4.6', label: 'GLM 4.6' },
+        { id: 'x-ai/grok-4-fast', label: 'Grok 4 Fast' },
+        { id: 'mistralai/mistral-large-2407', label: 'Mistral Large 2407' },
+        { id: 'mistralai/mistral-nemo', label: 'Mistral Nemo' },
+        { id: 'moonshotai/kimi-k2-0905', label: 'Kimi K2' },
+        { id: 'qwen/qwen3-vl-235b-a22b-instruct', label: 'Qwen 3 VL 235B' },
+        { id: 'deepseek/deepseek-v3.1-terminus', label: 'DeepSeek V3.1 Terminus' },
+        { id: 'deepseek/deepseek-chat-v3-0324', label: 'DeepSeek Chat V3' },
+        { id: 'minimax/minimax-m2', label: 'MiniMax M2' },
+    ],
+    defaultChatSettings: { // Configure default code chat settings
+        codeModel: 'google/gemini-3-pro-preview',
+        chatModel: 'openai/gpt-5-mini',
+        imageModel: 'fal-ai/nano-banana',
+        imageSize: ''
+    },
 
-```javascript
-const builder = new ContentBuilder({
-    container: '.container',
-    sendCommandUrl: 'api/sendcommand.php' // PHP endpoint
+    // OpenAI:
+    /*
+    sendCommandUrl: '/sendcommand',
+    sendCommandStreamUrl: '/sendcommand_stream', 
+    systemModel: 'gpt-4o-mini', // Configure model for analyzing request
+    codeModels: [
+        { id: 'gpt-5.1-2025-11-13', label: 'GPT-5.1' },
+        { id: 'gpt-5-mini-2025-08-07', label: 'GPT-5 Mini' },
+        { id: 'gpt-4.1-2025-04-14', label: 'GPT-4.1' },
+        { id: 'gpt-4.1-mini-2025-04-14', label: 'GPT-4.1 Mini' },
+        { id: 'gpt-5.1-codex', label: 'GPT-5.1 Codex' },
+        { id: 'gpt-5.1-codex-mini', label: 'GPT-5.1 Codex Mini' },
+    ],
+    chatModels: [
+        { id: 'gpt-4o-mini', label: 'GPT-4o Mini' },
+        { id: 'gpt-5-mini-2025-08-07', label: 'GPT-5 Mini' },
+        { id: 'gpt-5.1-2025-11-13', label: 'GPT-5.1' },
+        { id: 'gpt-5.1-chat-latest', label: 'GPT-5.1 Chat' },
+    ],
+    defaultChatSettings: {
+        codeModel: 'gpt-5-mini-2025-08-07',
+        chatModel: 'gpt-5-mini-2025-08-07',
+        imageModel: 'fal-ai/nano-banana',
+        imageSize: ''
+    },
+    */
 });
 ```
 
