@@ -747,6 +747,22 @@ already have; Fal.ai uses its own three endpoints.
 
 **For existing users:** If you're currently using Getimg.ai for image generation (`textToImageUrl`, `upscaleImageUrl` parameters), your implementation will continue to work without any changes. The Fal.ai integration is the current recommended approach for accessing a wider range of AI models, but you can continue using your existing setup or upgrade at your own pace.
 
+## AI Skill for Claude and ChatGPT
+
+The `contentbuilder-plugin` skill teaches Claude (and ChatGPT) to build plugins for ContentBuilder and ContentBox. Ask for one, for example *"Create a pricing table plugin with monthly and yearly prices"*, and you get the plugin folder (`index.js`, `style.css`, `README.md`), ready to drop into `assets/plugins/`.
+
+### Install
+
+**Claude app (claude.ai):** download [contentbuilder-plugin.zip](skills/contentbuilder-plugin.zip), then go to Settings > Capabilities > Skills and upload it.
+
+**Claude Code:** copy the [skills/contentbuilder-plugin](skills/contentbuilder-plugin) folder into `~/.claude/skills/` (for all projects) or into your project's `.claude/skills/`.
+
+**ChatGPT:** open Skills, choose Create, then Upload from your computer, and select the zip.
+
+### Use
+
+Ask for a plugin. Put the generated folder in `assets/plugins/` and paste the HTML from its `README.md` into a page.
+
 ## Resources
 
 - **[Plugin Development Guide](plugin-development.md)** - Learn how to create custom plugins for ContentBuilder
