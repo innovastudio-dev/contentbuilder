@@ -316,9 +316,69 @@ You can define multiple themes using the **`themes`** option when initializing C
 const builder = new ContentBuilder({
     container: '.container',
     themes: [
-        ['#ffffff', '', ''], // Light theme (default)
-        ['#282828', 'dark', 'contentbuilder/themes/dark.css'], // Dark theme
-        ['#0088dc', 'colored', 'contentbuilder/themes/colored-blue.css'] // Custom colored theme
+        ['#ffffff','',''],
+        ['#282828','dark',''],  
+        ['#0088dc','colored','contentbuilder/themes/colored-blue.css'], // color preview, class name & css file
+        ['#006add','colored','contentbuilder/themes/colored-blue6.css'],
+        ['#0a4d92','colored','contentbuilder/themes/colored-darkblue.css'],
+        ['#96af16','colored','contentbuilder/themes/colored-green.css'],
+        ['#f3522b','colored','contentbuilder/themes/colored-orange.css'],
+
+        ['#b92ea6','colored','contentbuilder/themes/colored-magenta.css'],
+        ['#e73171','colored','contentbuilder/themes/colored-pink.css'],
+        ['#782ec5','colored','contentbuilder/themes/colored-purple.css'],
+        ['#ed2828','colored','contentbuilder/themes/colored-red.css'],
+        ['#f9930f','colored','contentbuilder/themes/colored-yellow.css'],
+        ['#13b34b','colored','contentbuilder/themes/colored-green4.css'],
+        ['#333333','colored-dark','contentbuilder/themes/colored-dark.css'], 
+        
+        ['#dbe5f5','light','contentbuilder/themes/light-blue.css'],
+        ['#fbe6f2','light','contentbuilder/themes/light-pink.css'],
+        ['#dcdaf3','light','contentbuilder/themes/light-purple.css'],
+        ['#ffe9e0','light','contentbuilder/themes/light-red.css'],
+        ['#fffae5','light','contentbuilder/themes/light-yellow.css'],
+        ['#ddf3dc','light','contentbuilder/themes/light-green.css'],
+        ['#c7ebfd','light','contentbuilder/themes/light-blue2.css'],
+
+        ['#ffd5f2','light','contentbuilder/themes/light-pink2.css'],
+        ['#eadafb','light','contentbuilder/themes/light-purple2.css'],
+        ['#c5d4ff','light','contentbuilder/themes/light-blue3.css'],
+        ['#ffefb1','light','contentbuilder/themes/light-yellow2.css'],
+        ['#fefefe','light','contentbuilder/themes/light-gray3.css'],
+        ['#e5e5e5','light','contentbuilder/themes/light-gray2.css'],
+        ['#dadada','light','contentbuilder/themes/light-gray.css'],
+
+        ['#3f4ec9','colored','contentbuilder/themes/colored-blue2.css'],
+        ['#6779d9','colored','contentbuilder/themes/colored-blue4.css'],
+        ['#10b9d7','colored','contentbuilder/themes/colored-blue3.css'], 
+        ['#006add','colored','contentbuilder/themes/colored-blue5.css'],
+        ['#e92f94','colored','contentbuilder/themes/colored-pink3.css'],
+        ['#a761d9','colored','contentbuilder/themes/colored-purple2.css'],
+        ['#f9930f','colored','contentbuilder/themes/colored-yellow2.css'],
+
+        ['#f3522b','colored','contentbuilder/themes/colored-red3.css'],
+        ['#36b741','colored','contentbuilder/themes/colored-green2.css'],
+        ['#00c17c','colored','contentbuilder/themes/colored-green3.css'],
+        ['#fb3279','colored','contentbuilder/themes/colored-pink2.css'],
+        ['#ff6d13','colored','contentbuilder/themes/colored-orange2.css'], 
+        ['#f13535','colored','contentbuilder/themes/colored-red2.css'],
+        ['#646464','colored','contentbuilder/themes/colored-gray.css'],
+
+        ['#3f4ec9','dark','contentbuilder/themes/dark-blue.css'],
+        ['#0b4d92','dark','contentbuilder/themes/dark-blue2.css'],
+        ['#006add','dark','contentbuilder/themes/dark-blue3.css'],
+        ['#5f3ebf','dark','contentbuilder/themes/dark-purple.css'],
+        ['#e92f69','dark','contentbuilder/themes/dark-pink.css'],
+        ['#4c4c4c','dark','contentbuilder/themes/dark-gray.css'],
+        ['#ed2828','dark','contentbuilder/themes/dark-red.css'],
+
+        ['#006add','colored','contentbuilder/themes/colored-blue8.css'],
+        ['#ff7723','colored','contentbuilder/themes/colored-orange3.css'],
+        ['#ff5722','colored','contentbuilder/themes/colored-red5.css'],
+        ['#f13535','colored','contentbuilder/themes/colored-red4.css'],
+        ['#00bd79','colored','contentbuilder/themes/colored-green5.css'],
+        ['#557ae9','colored','contentbuilder/themes/colored-blue7.css'],
+        ['#fb3279','colored','contentbuilder/themes/colored-pink4.css'],
     ]
 });
 ```
@@ -414,6 +474,32 @@ builder.applyBehavior();
 
 ## **🎨 Other Configuration Options**
 
+### **⌨️ Keyboard Access**
+
+Everything in a row, a column, an element or a piece of text can be done
+without a mouse. With the cursor in the content, `Esc` (or `Alt+F10`) moves to
+the tools for whatever you are in, and each `Esc` after that steps out one
+level: the text tools, the tools of the picture or table you are in, the
+element, the column and the row, and back to your text. `Shift+Esc` steps back
+in.
+
+Each strip is a toolbar in its own right: the arrows move along it, `Home` and
+`End` jump to its ends, and `Enter` or `Space` uses a button. A panel that opens
+from a button takes the focus and hands it back when `Esc` closes it.
+
+See `docs/keyboard-access.md` for every key, with worked examples.
+
+Below 970px the tools are hidden, since laying out a page on a narrow screen is
+awkward. To keep them at every width, set **`simpleEditingBreakpoint`** to an
+empty string:
+
+```jsx
+const builder = new ContentBuilder({
+    container: '.container',
+    simpleEditingBreakpoint: ''
+});
+```
+
 ### **🌈 Color Picker**
 
 By default, ContentBuilder includes a color picker with a set of predefined colors. You can customize this list using the **`colors`** option:
@@ -457,17 +543,51 @@ When users paste content from external sources (like Word or another website), y
 ```jsx
 const builder = new ContentBuilder({
     container: '.container',
-    paste: 'text' // or 'html', 'html-without-styles'
+    paste: 'auto' // or 'html', 'html-without-styles', 'text'
 });
 ```
 
 **Values:**
 
-- **`'text'`** – Only plain text is pasted (default)
+- **`'auto'`** – Pasted content adopts the destination block (for example, pasting a heading into a paragraph keeps it a paragraph) while preserving text formatting such as bold, italic, links, and colors (default)
 - **`'html'`** – Full HTML content including styles
 - **`'html-without-styles'`** – HTML content without inline style attributes
+- **`'text'`** – Only plain text is pasted
 
-This helps maintain clean formatting based on your use case.
+Users can also change this behavior at any time from the editor's **Preferences** dialog.
+
+### **🧹 Unwanted Markup from Browser Extensions**
+
+Some browser extensions add their own elements and attributes to any text area they find, including the editor. That markup is not part of the content, so it is removed when the content is saved: the injected elements and attributes go, and the text they wrapped stays.
+
+This happens automatically. No configuration is needed.
+
+If your users have an extension that isn't covered, add its markup to the cleanup list:
+
+```jsx
+const builder = new ContentBuilder({
+    container: '.container',
+    extensionArtifacts: {
+        elements: ['my-extension-overlay'],     // removed entirely
+        wrappers: ['span[data-myext-id]'],      // removed, the text inside is kept
+        attributePrefixes: ['data-myext-'],     // attributes removed by prefix
+        stylePrefixes: ['--myext-']             // style properties removed by prefix
+    }
+});
+```
+
+Every list is added to the built-in ones.
+
+Extensions keep working while your users edit. If you would rather they didn't run inside the editing areas at all, you can turn them off there:
+
+```jsx
+const builder = new ContentBuilder({
+    container: '.container',
+    disableEditorExtensions: true
+});
+```
+
+Saved content is cleaned either way.
 
 ### **🗑 Clear Saved Preferences**
 
@@ -586,6 +706,25 @@ You can open the HTML code editor from code using:
 builder.viewHtml();
 ```
 
+### **🖼️ Programmatically Open the Image Editor**
+
+The Edit button on an image opens the image editor (crop, straighten, rotate, white balance, tone, film looks, grain). You can open the same editor on any image from your own UI, for example a background image in your own panel:
+
+```jsx
+builder.openImageEditor(url, (newUrl, filename) => {
+    // apply newUrl wherever the image is used
+    element.style.backgroundImage = `url("${newUrl}")`;
+});
+```
+
+The edited image is rendered at full resolution and saved through your upload handler under a new name, so the original file is never overwritten. If no upload handler is configured, `newUrl` is a data URL.
+
+A third argument is optional: the button that opened the editor, so keyboard focus returns to it when the dialog closes.
+
+```jsx
+builder.openImageEditor(url, callback, button);
+```
+
 ### **⚙️ Disable Column HTML Code Editor**
 
 By default, ContentBuilder.js shows an **HTML editor button** in the column tool popup. This allows users to view and edit the raw HTML of a column.
@@ -639,6 +778,92 @@ builder.redo();  // Re-applies the last undone action
 ```
 
 These are useful when integrating with custom UI elements.
+
+### **🪟 Build Your Own Dialog**
+
+`builder.modal()` builds a dialog around your content. You supply what goes
+inside; the shell, title bar, close button, accessibility attributes, padding and
+dragging are handled for you:
+
+```jsx
+const wordCount = builder.modal({
+    title: builder.out('Word Count'),
+    width: 320,
+    className: 'wordcount',   // optional hook for your own CSS
+    html: `
+        <div>
+            <div style="line-height:1">
+                <span class="wc-words" style="font-size:56px;font-weight:700;">0</span>
+                <span style="font-size:15px;margin-left:6px;">${builder.out('words')}</span>
+            </div>
+        </div>`
+});
+```
+
+It returns a handle:
+
+```jsx
+wordCount.open();     // show it
+wordCount.close();    // hide it
+wordCount.body        // the content wrapper - query your own markup from here
+wordCount.el          // the dialog element
+```
+
+Pair it with a toolbar button and there is nothing else to wire:
+
+```jsx
+options.buttons = ['bold','italic','underline','wordcount','|','undo','redo','more'];
+
+const html = `<button class="wordcount-button" title="${builder.out('Word Count')}"><!-- icon --></button>`;
+
+builder.addButton('wordcount', html, '.wordcount-button', () => {
+    wordCount.body.querySelector('.wc-words').textContent = countWords();
+    wordCount.open();
+});
+```
+
+**Options**
+
+| Option | Description |
+| --- | --- |
+| `html` | The content. Required. |
+| `title` | Title bar text. Omit for a bare dialog with a floating close button. |
+| `width` | `320` for pixels, or any CSS length such as `'40rem'`. |
+| `padding` | Overrides the body padding. Skipped automatically if your outermost element already sets padding inline. |
+| `closeButton` | Default `true`. |
+| `draggable` | Default `true`. Applies to the title bar. |
+| `className` | Extra class on the dialog, for your own CSS. |
+| `onOpen` / `onClose` | Callbacks, each receiving the handle. |
+
+See also `docs/others/TIPS.md` (recipe 7) for the full worked example.
+
+### **🖥️ Page Preview**
+
+A fullscreen preview of the page with a width ruler, for checking the layout at
+any size without leaving the editor.
+
+```jsx
+builder.openPagePreview();
+```
+
+The frame loads your `previewURL`, and the content reaches that page through the
+existing `onPreviewOpen` hook:
+
+```jsx
+const builder = new ContentBuilder({
+    previewURL: 'preview.html',
+    onPreviewOpen: () => {
+        // default: saves builder.html() to localStorage
+    },
+});
+```
+
+Nothing happens if `previewURL` is not set. In ContentBuilder the toolbar button is on by
+default — `'preview'` is part of `buttonsMore`, `elementButtonsMore` and `iconButtonsMore` —
+and it only appears once `previewURL` is set, since that is the page it opens.
+
+> Not to be confused with `openPreview()`, which opens Live Preview, the small
+> floating window. They are separate tools and both remain available.
 
 ### **🛑 Destroying the Editor Instance**
 
@@ -722,12 +947,15 @@ It supports two rows of buttons:
 ```jsx
 const builder = new ContentBuilder({
     container: '.container',
-    buttons: ['bold', 'italic', 'underline', 'formatting', 'color', 'align', 'textsettings', 'createLink', 'tags', '|', 'undo', 'redo', 'zoom', 'livepreview', 'aiassistant', 'snippets', 'more'],  
+    buttons: ['bold', 'italic', 'underline', 'formatting', 'color', 'align', 'textsettings', 'createLink', 'tags', '|', 'undo', 'redo', 'zoom', 'preview', 'aiassistant', 'snippets', 'more'],  
     buttonsMore: ['icon', 'svg', 'image', '|', 'list', 'font', 'formatPara', '|', 'html', 'preferences'], 
 });
 ```
 
-Plugin buttons (like **`preview`**, **`wordcount`**, **`symbols`**) can be used here.
+Built-in names you can add here include **`preview`**, **`searchreplace`** and **`symbols`**.
+`preview` and `searchreplace` are already in the default lists; `symbols` is not, so add it if
+you want it. Your own buttons work here too — give the name in this list and fill it in with
+`builder.addButton()` (see `docs/others/TIPS.md`).
 
 ### **🖼️ Element Toolbar**
 
@@ -743,7 +971,7 @@ Like the main toolbar, it supports two rows.
 ```jsx
 const builder = new ContentBuilder({
     container: '.container',
-    elementButtons: ['left', 'center', 'right', 'full' , 'undo', 'redo', 'zoom', 'livepreview', 'aiassistant', 'snippets', 'more'],  
+    elementButtons: ['left', 'center', 'right', 'full' , 'undo', 'redo', 'zoom', 'preview', 'aiassistant', 'snippets', 'more'],  
     elementButtonsMore: ['|', 'html', 'preferences'], 
 });
 ```
@@ -764,7 +992,7 @@ You can configure both rows like this:
 ```jsx
 const builder = new ContentBuilder({
     container: '.container',
-    iconButtons: ['icon', 'color','textsettings', 'createLink','|', 'undo', 'redo', 'zoom', 'livepreview', 'aiassistant', 'snippets', 'more'],  
+    iconButtons: ['icon', 'color','textsettings', 'createLink','|', 'undo', 'redo', 'zoom', 'preview', 'aiassistant', 'snippets', 'more'],  
     iconButtonsMore: ['html', 'preferences'], 
 });
 ```

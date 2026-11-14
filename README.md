@@ -315,21 +315,6 @@ export default function ViewPage() {
 }
 ```
 
-## Alternative: Without Runtime Library
-
-If you prefer not to use the runtime library, you can still use the basic content stylesheet:
-
-```javascript
-// For viewing only basic content
-import '@innovastudio/contentbuilder/public/contentbuilder/content.css'
-```
-
-Or in HTML:
-
-```html
-<link href="contentbuilder/content.css" rel="stylesheet">
-```
-
 ## Media Upload Handling
 
 ContentBuilder allows users to embed images, videos, audio files, or add links to uploaded documents directly within the editor. You can enable this feature by providing your own upload logic through the `upload` parameter.
@@ -420,141 +405,265 @@ You can build your own file picker application. The only requirement is that it 
 
 ## AI Assistant (Code Chat)
 
-ContentBuilder includes a **Code Chat panel** that allows users to generate and edit content using AI. This feature requires a server-side endpoint to communicate with AI providers like OpenAI or OpenRouter.
+ContentBuilder includes a **Code Chat panel** that lets users build and edit content using AI. Users can describe what they want, ask questions, and attach a screenshot or document to work from.
 
-**Important:** ContentBuilder.js is a client-side library and works with any server platform. The Code Chat feature simply requires you to create an API endpoint on your server. Examples are provided in **Node.js, Next.js, and PHP** to cover common scenarios, but you can implement the endpoint in any server-side language or framework.
+Code Chat needs a server-side endpoint to talk to an AI provider. ContentBuilder.js is a client-side library and works with any server platform — examples are provided in **Node.js, PHP and Next.js**, and you can implement the endpoint in any language.
 
 ### Requirements
 
-You'll need an API key from one of these services:
+An API key from one of these:
 
+- **OpenRouter** – https://openrouter.ai (access to models from several providers)
 - **OpenAI** – https://openai.com
-- **OpenRouter** – https://openrouter.ai (provides access to multiple AI models)
 
-### Configuration
+### Store your API key
 
-**Store your API key:**
-
-**Node.js/Next.js** (`.env` file):
+**Node.js / Next.js** (`.env`):
 
 ```
-OPENAI_API_KEY=YOUR_API_KEY
 OPENROUTER_API_KEY=YOUR_API_KEY
+OPENAI_API_KEY=YOUR_API_KEY
 ```
 
-**PHP** (`config.php` file):
+**PHP** (`config.php`):
 
 ```php
-$OPENAI_API_KEY = 'YOUR_API_KEY';
 $OPENROUTER_API_KEY = 'YOUR_API_KEY';
+$OPENAI_API_KEY = 'YOUR_API_KEY';
 ```
 
-**Configure ContentBuilder:**
+### Configure ContentBuilder
+
+**Using OpenRouter:**
 
 ```javascript
 const builder = new ContentBuilder({
     container: '.container',
 
-    // Enable Code Chat (supports OpenAI or OpenRouter)
+    chatEngine: 'v2',
+    chatAttachments: true,          // let users attach images, PDFs and documents
 
-    // clearChatSettings: true, // clear chat settings on load
-    // startCodeChat: true, // automatically open Code Chat
+    sendCommandUrl: '/openrouter',  // your endpoint
 
-    // OpenRouter:
-    sendCommandUrl: '/openrouter', // Your server endpoint for handling AI requests
-    sendCommandStreamUrl: '/openrouter_stream', // Enable streaming feature (optional)
-    systemModel: 'openai/gpt-4o-mini', // Configure model for analyzing request
-    codeModels: [ // Configure available models for code generation
-        { id: 'anthropic/claude-opus-4.5', label: 'Claude Opus 4.5' },
-        { id: 'google/gemini-3-pro-preview', label: 'Google Gemini 3 Pro Preview' },
-        { id: 'google/gemini-2.5-flash', label: 'Google Gemini 2.5 Flash' },
-        { id: 'qwen/qwen3-coder', label: 'Qwen 3 Coder' },
-        { id: 'openai/gpt-5-mini', label: 'GPT-5 Mini' },
-        { id: 'openai/gpt-5.1-codex-mini', label: 'GPT-5.1-Codex-Mini' },
-        { id: 'openai/gpt-5.1-codex', label: 'GPT-5.1-Codex' },
-        { id: 'anthropic/claude-sonnet-4.5', label: 'Claude Sonnet 4.5' },
-        { id: 'x-ai/grok-code-fast-1', label: 'Grok Code Fast 1' },
-        { id: 'mistralai/codestral-2508', label: 'Mistral Codestral 2508' },
-        { id: 'mistralai/devstral-small', label: 'Mistral Devstral Small' },
-        { id: 'openai/gpt-oss-120b', label: 'GPT OSS 120B' },
-        { id: 'google/gemini-2.5-flash-lite', label: 'Gemini 2.5 Flash Lite' },
-        { id: 'google/gemini-2.5-pro', label: 'Gemini 2.5 Pro' },
-        { id: 'z-ai/glm-4.6', label: 'GLM 4.6' },
-        { id: 'x-ai/grok-4-fast', label: 'Grok 4 Fast' },
-        { id: 'mistralai/mistral-large-2407', label: 'Mistral Large 2407' },
-        { id: 'mistralai/mistral-nemo', label: 'Mistral Nemo' },
-        { id: 'moonshotai/kimi-k2-0905', label: 'Kimi K2' },
-        { id: 'qwen/qwen3-vl-235b-a22b-instruct', label: 'Qwen 3 VL 235B' },
-        { id: 'deepseek/deepseek-v3.1-terminus', label: 'DeepSeek V3.1 Terminus' },
-        { id: 'deepseek/deepseek-chat-v3-0324', label: 'DeepSeek Chat V3' },
-        { id: 'minimax/minimax-m2', label: 'MiniMax M2' },
+    codeModels: [                   // models offered in Chat Settings
+        { id: '~anthropic/claude-opus-latest', label: 'Claude Opus (Latest)' },
+        { id: '~anthropic/claude-sonnet-latest', label: 'Claude Sonnet (Latest)' },
+        { id: '~google/gemini-pro-latest', label: 'Gemini Pro (Latest)' },
+        { id: '~openai/gpt-latest', label: 'GPT (Latest)' },
     ],
-    chatModels: [ // Configure available models for chat
-        { id: 'openai/gpt-4o-mini', label: 'GPT-4o Mini' },
-        { id: 'openai/gpt-4o', label: 'GPT-4o' },
-        { id: 'openai/gpt-5.1', label: 'GPT-5.1' },
-        { id: 'openai/gpt-5.1-chat', label: 'GPT-5.1 Chat' },
-        { id: 'openai/gpt-5-mini', label: 'GPT-5 Mini' },
-        { id: 'openai/gpt-5-nano', label: 'GPT-5 Nano' },
-        { id: 'anthropic/claude-sonnet-4.5', label: 'Claude Sonnet 4.5' },
-        { id: 'google/gemini-2.5-flash', label: 'Google Gemini 2.5 Flash' },
-        { id: 'google/gemini-2.5-flash-lite', label: 'Gemini 2.5 Flash Lite' },
-        { id: 'google/gemini-2.5-pro', label: 'Gemini 2.5 Pro' },
-        { id: 'z-ai/glm-4.6', label: 'GLM 4.6' },
-        { id: 'x-ai/grok-4-fast', label: 'Grok 4 Fast' },
-        { id: 'mistralai/mistral-large-2407', label: 'Mistral Large 2407' },
-        { id: 'mistralai/mistral-nemo', label: 'Mistral Nemo' },
-        { id: 'moonshotai/kimi-k2-0905', label: 'Kimi K2' },
-        { id: 'qwen/qwen3-vl-235b-a22b-instruct', label: 'Qwen 3 VL 235B' },
-        { id: 'deepseek/deepseek-v3.1-terminus', label: 'DeepSeek V3.1 Terminus' },
-        { id: 'deepseek/deepseek-chat-v3-0324', label: 'DeepSeek Chat V3' },
-        { id: 'minimax/minimax-m2', label: 'MiniMax M2' },
-    ],
-    defaultChatSettings: { // Configure default code chat settings
-        codeModel: 'google/gemini-3-pro-preview',
-        chatModel: 'openai/gpt-5-mini',
-        imageModel: 'fal-ai/nano-banana',
-        imageSize: ''
-    },
 
-    // OpenAI:
-    /*
-    sendCommandUrl: '/sendcommand',
-    sendCommandStreamUrl: '/sendcommand_stream', 
-    systemModel: 'gpt-4o-mini', // Configure model for analyzing request
-    codeModels: [
-        { id: 'gpt-5.1-2025-11-13', label: 'GPT-5.1' },
-        { id: 'gpt-5-mini-2025-08-07', label: 'GPT-5 Mini' },
-        { id: 'gpt-4.1-2025-04-14', label: 'GPT-4.1' },
-        { id: 'gpt-4.1-mini-2025-04-14', label: 'GPT-4.1 Mini' },
-        { id: 'gpt-5.1-codex', label: 'GPT-5.1 Codex' },
-        { id: 'gpt-5.1-codex-mini', label: 'GPT-5.1 Codex Mini' },
-    ],
-    chatModels: [
-        { id: 'gpt-4o-mini', label: 'GPT-4o Mini' },
-        { id: 'gpt-5-mini-2025-08-07', label: 'GPT-5 Mini' },
-        { id: 'gpt-5.1-2025-11-13', label: 'GPT-5.1' },
-        { id: 'gpt-5.1-chat-latest', label: 'GPT-5.1 Chat' },
-    ],
     defaultChatSettings: {
-        codeModel: 'gpt-5-mini-2025-08-07',
-        chatModel: 'gpt-5-mini-2025-08-07',
+        codeModel: '~anthropic/claude-opus-latest',
         imageModel: 'fal-ai/nano-banana',
-        imageSize: ''
+        imageSize: '',
     },
-    */
 });
 ```
 
+**Using OpenAI:**
+
+```javascript
+const builder = new ContentBuilder({
+    container: '.container',
+
+    chatEngine: 'v2',
+    chatAttachments: true,
+
+    sendCommandUrl: '/sendcommand',
+
+    codeModels: [
+        { id: 'gpt-5.6-sol', label: 'GPT-5.6 Sol' },
+        { id: 'gpt-5.6-terra', label: 'GPT-5.6 Terra' },
+        { id: 'gpt-5.5', label: 'GPT-5.5' },
+        { id: 'gpt-5.4-mini', label: 'GPT-5.4 Mini' },
+    ],
+
+    defaultChatSettings: {
+        codeModel: 'gpt-5.6-terra',
+        imageModel: 'fal-ai/nano-banana',
+        imageSize: '',
+    },
+});
+```
+
+One model does the work, and users pick it from `codeModels` in Chat Settings. The first entry is also the fallback if a saved choice is no longer in the list, so put a dependable model there.
+
+Image generation is configured separately — see **AI Image Generation** below.
+
 ### Server-Side Implementation
 
-Your endpoint receives AI requests from ContentBuilder and forwards them to the AI provider. Server-side endpoint examples are provided in **Node.js, Next.js, and PHP** within the ContentBuilder package and on GitHub.
+Your endpoint receives requests from Code Chat and forwards them to the AI provider. Working examples for **Node.js, PHP and Next.js** are included in this package, pre-configured — add your API key and Code Chat works immediately.
 
-The examples included in the ContentBuilder package have this pre-configured, so you can test the AI Assistant immediately after adding your API key.
+Writing your own endpoint, or adding Code Chat to a server you already have? The code to paste is in
+[Enabling Chat Engine v2 on your server](chat-engine-v2-server.md).
+
+### What users get
+
+- **Precise edits.** Asking to change one thing changes that row only — the rest of the content is left exactly as it was.
+- **Questions are answered in the chat**, without touching the content.
+- **Attachments.** Users can attach a screenshot to match, a photo to place, or a document to build from — see **File Attachments** below.
+- **Progress as it works** — "Looking at the page", "Reading row 3", "Updating row 3" — and answers stream in as they are written.
+
+### File Attachments
+
+Set `chatAttachments: true` and users can attach files to a message. It works
+without further configuration:
+
+- **Images** on any model that reads images.
+- **Text files** — `.txt`, `.md`, `.csv`, `.js` and similar — on **every** model.
+  They are read in the browser and sent as part of the message, so they do not
+  depend on the model accepting file uploads.
+- **PDFs** on models that read them directly: Anthropic, Google, OpenAI and Grok.
+
+A file type that is not offered for the selected model is refused in the
+browser, before any request is sent.
+
+#### Choosing what a model accepts
+
+Add `accepts` to a model entry to change what may be attached for it:
+
+```javascript
+codeModels: [
+    { id: 'vendor/some-model', label: 'Some Model', accepts: ['image'] },
+],
+```
+
+The categories are `'image'`, `'pdf'`, `'text'` and `'office'`.
+
+`accepts` is a policy, not a description of the model. You can allow less than
+a model supports — to keep users on file types you have tested, or to hold down
+the size of requests — and you never need to know a model's full capability to
+use it. Declare what you are sure of; leave it out and the defaults above apply.
+
+To offer PDFs on a model that is not one of the four above, add `'pdf'` yourself:
+
+```javascript
+    { id: 'vendor/some-model', label: 'Some Model', accepts: ['image', 'text', 'pdf'] },
+```
+
+A model with no file input has two sensible declarations, and they mean
+different things:
+
+```javascript
+    { id: 'vendor/text-only-model', label: 'Text Only', accepts: [] },        // no attachments at all
+    { id: 'vendor/text-only-model', label: 'Text Only', accepts: ['text'] },  // text files still work
+```
+
+`accepts: []` turns the attach button off for that model.
+
+#### Office documents
+
+Word, Excel and PowerPoint files are off by default. Turn them on with:
+
+```javascript
+    convertAttachments: true,
+```
+
+They are then read in the browser and sent as text, which works on any model.
+Only the text comes through — tables, layout and images inside the document do
+not — which is why it is opt-in rather than the default.
+
+An `accepts` you have declared still applies: a model declared as
+`accepts: ['image']` takes images only, whether or not this option is on.
+
+If the model reads Office files itself, declare `'office'` instead of turning
+conversion on. The file is then sent as it is, for the model to read directly,
+and nothing is flattened:
+
+```javascript
+    { id: 'vendor/some-model', label: 'Some Model', accepts: ['image', 'text', 'office'] },
+```
+
+Use conversion when you want Office files to work everywhere; declare
+`'office'` when you know the model reads them and want the full document.
+
+#### What users see
+
+When a file is not accepted, the user is told in the chat panel:
+
+> notes.md: file type not accepted. Please attach images or PDF files instead.
+
+The suggestion at the end names what is enabled for the model they have
+selected, so it changes with the model.
+
+### Already using the previous engine?
+
+Code Chat's original engine is still there, and setting `chatEngine: 'v1'` (or omitting the option) keeps it. It uses two extra options that `'v2'` ignores:
+
+```javascript
+    systemModel: 'openai/gpt-4o-mini',   // v1 only — analyses each request
+    chatModels: [ /* ... */ ],           // v1 only — model for answering questions
+```
+
+`'v2'` produces better results and costs less, and it is the engine to use for anything new. Switching needs one update to your endpoint — see the link above. Until you make that change, keep `'v1'` and everything works as before; if you switch without it, Code Chat tells you so on the first message.
+
+**Canvas mode** stays on `'v1'`. A freeform layout has no rows for v2's row-based editing to work with, so `chatEngine: 'v2'` is ignored when `canvas: true`.
 
 ## AI Image Generation
 
-ContentBuilder supports AI-powered image generation directly from the AI Assistant panel. Users can type a text prompt to generate images that are automatically embedded into their content.
+Users can generate an image from the Code Chat panel, or ask for a change to a
+photo already on the page. Pick one provider: OpenRouter, OpenAI or Fal.ai.
+
+### Using OpenRouter or OpenAI
+
+Set the provider and list the models to offer. Image requests go to the endpoint
+Code Chat already uses, so there is nothing else to set up.
+
+**OpenRouter:**
+
+```javascript
+const builder = new ContentBuilder({
+    // ...
+    sendCommandUrl: '/openrouter',
+
+    defaultImageGenerationProvider: 'openrouter',
+    imageModels: [
+        { id: 'google/gemini-3-pro-image', label: 'Gemini 3 Pro Image', image_input: true,
+          sizes: ['auto', '1:1', '4:3', '3:4', '16:9', '9:16'] },
+        { id: 'google/gemini-3.1-flash-image', label: 'Gemini 3.1 Flash Image', image_input: true,
+          sizes: ['auto', '1:1', '4:3', '3:4', '16:9', '9:16'] },
+    ],
+});
+```
+
+**OpenAI:**
+
+```javascript
+const builder = new ContentBuilder({
+    // ...
+    sendCommandUrl: '/sendcommand',
+
+    defaultImageGenerationProvider: 'openai',
+    imageModels: [
+        { id: 'gpt-image-2', label: 'GPT Image 2', image_input: true,
+          sizes: ['auto', '1024x1024', '1536x1024', '1024x1536', '2048x2048'] },
+        { id: 'gpt-image-1-mini', label: 'GPT Image 1 Mini', image_input: true,
+          sizes: ['auto', '1024x1024', '1536x1024', '1024x1536'] },
+    ],
+});
+```
+
+In each model entry:
+
+- **`id`**, **`label`** — the provider's model id, and the name users see in Chat Settings.
+- **`image_input: true`** — this model can work from an existing photo, so users
+  can ask for a change to an image on the page. Without it the model only makes
+  new images.
+- **`sizes`** — the choices in the size button. Use values the provider accepts:
+  aspect ratios such as `16:9` for OpenRouter, pixel dimensions such as
+  `1536x1024` for OpenAI. Include `'auto'` to let the model choose — on an edit
+  that keeps the original photo's shape.
+
+Uses the API key you already set for Code Chat:
+
+```
+OPENROUTER_API_KEY=your_key
+OPENAI_API_KEY=your_key
+```
+
+### Using Fal.ai
+
+Fal.ai needs three URLs configured.
 
 ### Requirements
 
@@ -621,11 +730,18 @@ const builder = new ContentBuilder({
 
 ### Choosing Image Models
 
-Fal.ai provides access to multiple AI image models, from Google's latest models to FLUX variants. Users can select their preferred model and image size/orientation from the AI Assistant settings panel.
+Whichever provider you use, the models you list in `imageModels` are what users
+pick from in Chat Settings, along with the size choices you gave that model.
+
+`imageModels` is optional: each provider ships with a built-in list, so leaving
+it out gives users a ready set of models. Set it when you want to offer fewer
+models, different ones, or your own size choices.
 
 ### Server-Side Implementation
 
-Server-side endpoint examples for handling image generation requests are provided in **Node.js, Next.js, and PHP** within the ContentBuilder package and on GitHub.
+Working examples for **Node.js, PHP and Next.js** are included in this package,
+pre-configured. OpenRouter and OpenAI are served by the Code Chat route you
+already have; Fal.ai uses its own three endpoints.
 
 ### 📢 Upgrade Note
 
@@ -635,5 +751,6 @@ Server-side endpoint examples for handling image generation requests are provide
 
 - **[Plugin Development Guide](plugin-development.md)** - Learn how to create custom plugins for ContentBuilder
 - **[Configuration Reference](reference.md)**
+- **[Keyboard Access](keyboard-access.md)** - Using the editor without a mouse
 - **Product Website** - https://innovastudio.com/contentbuilder
 - **GitHub Repository** - https://github.com/innovastudio-dev/contentbuilder
