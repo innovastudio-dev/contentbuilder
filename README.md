@@ -4,6 +4,17 @@ ContentBuilder.js is a Javascript library for creating elegant, editorial-style 
 
 Website: [https://innovastudio.com/contentbuilder](https://innovastudio.com/contentbuilder)
 
+## Step-by-Step Guides
+
+Short guides that take you from an empty project to a working editor, with saving, uploads and a page that shows the content to visitors. Pick your setup:
+
+- [Plain HTML](https://innovastudio.com/using-contentbuilder-in-plain-html): no build step, no backend
+- [PHP](https://innovastudio.com/using-contentbuilder-in-a-php-project): no framework
+- [React](https://innovastudio.com/using-contentbuilder-in-a-react-project): Vite
+- [Next.js](https://innovastudio.com/using-contentbuilder-in-a-nextjs-project): App Router
+- [Laravel](https://innovastudio.com/using-contentbuilder-in-a-laravel-project): Blade and Vite
+- [SvelteKit](https://innovastudio.com/using-contentbuilder-in-a-sveltekit-project): Svelte 5
+
 ## Installation
 
 ### Via NPM
@@ -753,9 +764,9 @@ The `contentbuilder-plugin` skill teaches Claude (and ChatGPT) to build plugins 
 
 ### Install
 
-**Claude app (claude.ai):** download [contentbuilder-plugin.zip](skills/contentbuilder-plugin.zip), then go to Settings > Capabilities > Skills and upload it.
+**Claude app (claude.ai):** download [contentbuilder-plugin.zip](https://github.com/innovastudio-dev/contentbuilder/raw/HEAD/skills/contentbuilder-plugin.zip), then go to Settings > Capabilities > Skills and upload it.
 
-**Claude Code:** copy the [skills/contentbuilder-plugin](skills/contentbuilder-plugin) folder into `~/.claude/skills/` (for all projects) or into your project's `.claude/skills/`.
+**Claude Code:** copy the [skills/contentbuilder-plugin](https://github.com/innovastudio-dev/contentbuilder/tree/HEAD/skills/contentbuilder-plugin) folder into `~/.claude/skills/` (for all projects) or into your project's `.claude/skills/`.
 
 **ChatGPT:** open Skills, choose Create, then Upload from your computer, and select the zip.
 
